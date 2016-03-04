@@ -21,8 +21,12 @@ echo "Update paket"
 apt-get -qq update
 apt-get -qq upgrade
 
+sudo add-apt-repository ppa:ondrej/php5-5.6
+echo "Update"
+apt-get update
+
 echo "Install base pakets"
-apt-get -y install vim curl build-essential python-software-properties git
+apt-get -y install curl build-essential python-software-properties git
 
 echo "Update"
 apt-get update
@@ -44,7 +48,7 @@ mysql -uroot -p${DBPASSWD} -e "CREATE DATABASE ${DBNAME}"
 mysql -uroot -p${DBPASSWD} -e "grant all privileges on $DBNAME.* to '${DBUSER}'@'localhost' identified by '${DBPASSWD}'"
 
 echo "--- Install repos ---"
-add-apt-repository ppa:ondrej/php5
+#add-apt-repository ppa:ondrej/php5
 
 #uncomment to install NodeJS
 #add-apt-repository ppa:chris-lea/node.js
@@ -52,7 +56,7 @@ add-apt-repository ppa:ondrej/php5
 apt-get -qq update
 
 echo "--- Install PHP ---"
-apt-get install -y php5 libapache2-mod-php5 php5-curl php5-gd php5-mcrypt php5-mysql php-apc
+apt-get install -y php5 libapache2-mod-php5 php5-curl php5-gd php5-mcrypt php5-mysql mc
 php5enmod mcrypt
 
 #echo "--- Установка и конфигурация xDebug ---"
@@ -71,15 +75,29 @@ echo "--- Inatall root dir---"
 sudo rm -rf ${apache_document_root}
 sudo ln -fs ${host_document_root}/${project_folder_name} ${apache_document_root}
 
-echo "--- Settings php.ini and apache2.conf ---"
-sed -i "s/error_reporting = .*/error_reporting = E_ALL/" ${php_config_file}
-sed -i "s/display_errors = .*/display_errors = On/" ${php_config_file}
-sed -i "s/upload_max_filesize = .*/upload_max_filesize = 128M/" ${php_config_file}
-sed -i "s/post_max_size = .*/post_max_size = 256M/" ${php_config_file}
-sed -i "s/mbstring.func_overload = .*/mbstring.func_overload = 2/" ${php_config_file}
-sed -i "s/mbstring.internal_encoding = .*/mbstring.internal_encoding = UTF-8/" ${php_config_file}
-sed -i "s/short_open_tag = .*/short_open_tag = on/" ${php_config_file}
+#mkdir -p /home/vagrant/php/sessions/
+#chown -R www-data:www-data /home/vagrant/php/
 
+echo "--- Settings php.ini and apache2.conf ---"
+sed -i "s/error_reporting =.*/error_reporting = E_ALL/" ${php_config_file}
+sed -i "s/display_errors =.*/display_errors = On/" ${php_config_file}
+sed -i "s/upload_max_filesize =.*/upload_max_filesize = 128M/" ${php_config_file}
+sed -i "s/post_max_size =.*/post_max_size = 256M/" ${php_config_file}
+sed -i "s/;mbstring.func_overload =.*/mbstring.func_overload = 2/" ${php_config_file}
+sed -i "s/;mbstring.internal_encoding =.*/mbstring.internal_encoding = UTF-8/" ${php_config_file}
+sed -i "s/short_open_tag =.*/short_open_tag = on/" ${php_config_file}
+#sed -i "s/;session.save_path =.*/session.save_path = \/home\/vagrant\/php\/sessions/" ${php_config_file}
+# Date Timezone
+echo "---Date Timezone----"
+sed -i "s/;date.timezone =.*/date.timezone = UTC/" ${php_config_file}
+# opCache
+echo "---opCache----"
+sed -i "s/.*opcache.enable=.*/opcache.enable=1/" ${php_config_file}
+sed -i "s/.*opcache.fast_shutdown=.*/opcache.fast_shutdown=1/" ${php_config_file}
+sed -i "s/.*opcache.interned_strings_buffer=.*/opcache.interned_strings_buffer=8/" ${php_config_file}
+sed -i "s/.*opcache.max_accelerated_files=.*/opcache.max_accelerated_files=100000/" ${php_config_file}
+sed -i "s/.*opcache.memory_consumption=.*/opcache.memory_consumption=128/" ${php_config_file}
+sed -i "s/.*opcache.revalidate_freq=.*/opcache.revalidate_freq=0/" ${php_config_file}
 
 #uncomment to work with Boris
 #echo "--- Работа с Boris---"
