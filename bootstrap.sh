@@ -83,10 +83,10 @@ sed -i "s/error_reporting =.*/error_reporting = E_ALL/" ${php_config_file}
 sed -i "s/display_errors =.*/display_errors = On/" ${php_config_file}
 sed -i "s/upload_max_filesize =.*/upload_max_filesize = 128M/" ${php_config_file}
 sed -i "s/post_max_size =.*/post_max_size = 256M/" ${php_config_file}
-sed -i "s/;mbstring.func_overload =.*/mbstring.func_overload = 2/" ${php_config_file}
-sed -i "s/;mbstring.internal_encoding =.*/mbstring.internal_encoding = UTF-8/" ${php_config_file}
+sed -i "s/.*mbstring.func_overload =.*/mbstring.func_overload = 2/" ${php_config_file}
+sed -i "s/.*mbstring.internal_encoding =.*/mbstring.internal_encoding = UTF-8/" ${php_config_file}
 sed -i "s/short_open_tag =.*/short_open_tag = on/" ${php_config_file}
-#sed -i "s/;session.save_path =.*/session.save_path = \/home\/vagrant\/php\/sessions/" ${php_config_file}
+sed -i "s/.*realpath_cache_size =.*/realpath_cache_size = 4096k/" ${php_config_file}
 # Date Timezone
 echo "---Date Timezone----"
 sed -i "s/;date.timezone =.*/date.timezone = UTC/" ${php_config_file}
