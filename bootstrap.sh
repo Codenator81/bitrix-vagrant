@@ -22,13 +22,13 @@ apt-get -qq update
 apt-get -qq upgrade
 
 sudo add-apt-repository ppa:ondrej/php5-5.6
-echo "Update"
+echo "apt-get update"
 apt-get update
 
-echo "Install base pakets"
+echo "Install base pakets curl build-essential python-software-properties git"
 apt-get -y install curl build-essential python-software-properties git
 
-echo "Update"
+echo "apt-get update"
 apt-get update
 
 echo "--- Install Apache2 ---"
@@ -47,7 +47,7 @@ apt-get -y install mysql-server-5.5 mysql-client phpmyadmin
 mysql -uroot -p${DBPASSWD} -e "CREATE DATABASE ${DBNAME}"
 mysql -uroot -p${DBPASSWD} -e "grant all privileges on $DBNAME.* to '${DBUSER}'@'localhost' identified by '${DBPASSWD}'"
 
-echo "--- Install repos ---"
+#echo "--- Install repos ---"
 #add-apt-repository ppa:ondrej/php5
 
 #uncomment to install NodeJS
@@ -56,13 +56,14 @@ echo "--- Install repos ---"
 apt-get -qq update
 
 echo "--- Install PHP ---"
+echo "apt-get install -y php5 libapache2-mod-php5 php5-curl php5-gd php5-mcrypt php5-mysql mc"
 apt-get install -y php5 libapache2-mod-php5 php5-curl php5-gd php5-mcrypt php5-mysql mc
 php5enmod mcrypt
 
 #echo "--- Установка и конфигурация xDebug ---"
 #apt-get install -y php5-xdebug
 
-#cat << EOF | sudo tee -a ${xdebug_config_file}
+#cat << EOF | usudo tee -a ${xdebug_config_file}
 #xdebug.scream=1
 #xdebug.cli_color=1
 #xdebug.show_local_vars=1
